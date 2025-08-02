@@ -13,7 +13,7 @@ dotenv.config({ path: '../.env.local' });
 // Get directory paths for serving static files
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const distPath = path.join(__dirname, '../../dist');
+const distPath = path.join(__dirname, '../dist-react');
 
 const TELEGRAM_BOT_TOKEN = process.env.TELEGRAM_BOT_TOKEN;
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
