@@ -35,6 +35,13 @@ class OpenAIService {
   private openai: OpenAI;
 
   constructor(apiKey: string) {
+    console.log('🔑 OpenAI API Key length:', apiKey ? apiKey.length : 'MISSING');
+    console.log('🔑 OpenAI API Key starts with:', apiKey ? apiKey.substring(0, 7) + '...' : 'MISSING');
+    
+    if (!apiKey) {
+      throw new Error('OpenAI API key is required');
+    }
+    
     this.openai = new OpenAI({
       apiKey: apiKey
     });

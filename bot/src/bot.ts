@@ -20,6 +20,11 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 const BOT_SERVER_PORT = process.env.BOT_SERVER_PORT || 3001;
 const WEBHOOK_URL = process.env.TELEGRAM_WEBHOOK_URL;
 
+console.log('🔍 Environment Variables Check:');
+console.log('TELEGRAM_BOT_TOKEN:', TELEGRAM_BOT_TOKEN ? 'SET (' + TELEGRAM_BOT_TOKEN.substring(0, 10) + '...)' : 'MISSING');
+console.log('OPENAI_API_KEY:', OPENAI_API_KEY ? 'SET (' + OPENAI_API_KEY.substring(0, 7) + '...)' : 'MISSING');
+console.log('BOT_SERVER_PORT:', BOT_SERVER_PORT);
+
 if (!TELEGRAM_BOT_TOKEN) {
   console.error('❌ TELEGRAM_BOT_TOKEN is required in .env.local');
   process.exit(1);
