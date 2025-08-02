@@ -14,12 +14,20 @@ src/**/*.js.map
 src/**/*.d.ts
 src/**/*.d.ts.map
 
-# Environment variables
-.env
+# Environment variables and sensitive files
+.env*
+*.env
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
+
+# Credentials and secrets (prevent accidental exposure)
+*supabase*key*
+*jwt*
+*token*
+*secret*
+*credential*
 
 # Logs
 *.log

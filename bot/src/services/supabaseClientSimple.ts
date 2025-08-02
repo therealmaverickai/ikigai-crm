@@ -1,9 +1,9 @@
 import { createClient } from '@supabase/supabase-js';
 import bcrypt from 'bcryptjs';
 
-// Direct credentials (for testing - in production use environment variables)
-const supabaseUrl = 'https://gpejlfhsesjnbeiactlo.supabase.co';
-const supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZWpsZmhzZXNqbmJlaWFjdGxvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQwNzU2ODYsImV4cCI6MjA2OTY1MTY4Nn0.S70xr_zAksc9uWiFWB3YQhqVN34Kx_OtUmDKB_2uLXc';
+// Use environment variables for security
+const supabaseUrl = process.env.SUPABASE_URL || '';
+const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || '';
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
