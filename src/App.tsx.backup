@@ -1,0 +1,110 @@
+import { useState, useEffect } from 'react';
+import { useCrmStore } from './stores/crmStoreDb';
+import MainLayout from './components/layout/MainLayout';
+import Dashboard from './components/Dashboard';
+import CompaniesPage from './components/companies/CompaniesPage';
+import ContactsPage from './components/contacts/ContactsPage';
+import DealsPage from './components/deals/DealsPage';
+import ProjectsPage from './components/projects/ProjectsPage';
+import TimeTracking from './components/time-tracking/TimeTrackingFocused';
+import SettingsPage from './components/settings/SettingsPage';
+
+type Page = 'dashboard' | 'companies' | 'contacts' | 'deals' | 'projects' | 'time-tracking' | 'settings';
+
+function App() {
+  const [currentPage, setCurrentPage] = useState<Page>('dashboard');
+  const [isAddCompanyModalOpen, setIsAddCompanyModalOpen] = useState(false);
+  const { initializeSampleData, loadAllData, isLoading } = useCrmStore();
+  
+  const handleAddCompany = () => {
+    setCurrentPage('companies');
+    // Delay modal opening to allow page transition
+    setTimeout(() => {
+      setIsAddCompanyModalOpen(true);
+    }, 100);
+  };
+
+  const handleExportData = () => {
+    try {
+      // Export data from Zustand store (cloud data)
+      const { exportAllData } = useCrmStore.getState();
+      const data = exportAllData();
+      const dataStr = JSON.stringify(data, null, 2);
+      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+      const url = URL.createObjectURL(dataBlob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `crm-data-${new Date().toISOString().split('T')[0]}.json`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+      console.log('✅ Data exported successfully');
+    } catch (error) {
+      console.error('❌ Failed to export data:', error);
+    }
+  };
+
+  // Initialize database and load data on first load
+  useEffect(() => {
+    const initialize = async () => {
+      try {
+        await initializeSampleData();
+        await loadAllData();
+      } catch (error) {
+        console.error('Failed to initialize app:', error);
+      }
+    };
+    
+    initialize();
+  }, [initializeSampleData, loadAllData]);
+
+  const renderPage = () => {
+    switch (currentPage) {
+      case 'companies':
+        return (
+          <CompaniesPage 
+            forceOpenModal={isAddCompanyModalOpen}
+            onModalStateChange={setIsAddCompanyModalOpen}
+          />
+        );
+      case 'contacts':
+        return <ContactsPage />;
+      case 'deals':
+        return <DealsPage />;
+      case 'projects':
+        return <ProjectsPage />;
+      case 'time-tracking':
+        return <TimeTracking />;
+      case 'settings':
+        return <SettingsPage />;
+      case 'dashboard':
+      default:
+        return <Dashboard />;
+    }
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-8 w-8 border-2 border-primary-600 border-t-transparent mx-auto mb-4"></div>
+          <p className="text-gray-600">Loading your CRM data...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <MainLayout 
+      currentPage={currentPage} 
+      onPageChange={setCurrentPage}
+      onAddCompany={handleAddCompany}
+      onExportData={handleExportData}
+    >
+      {renderPage()}
+    </MainLayout>
+  );
+}
+
+export default App;
