@@ -72,6 +72,7 @@ class CRMExecutor {
     }
 
     try {
+      console.log('🏢 Creating company with Supabase:', entities.companyName);
       const company = await supabaseApiSimple.createCompany({
         name: entities.companyName,
         industry: entities.industry || '',
@@ -83,6 +84,7 @@ class CRMExecutor {
         notes: entities.notes || '',
         tags: entities.tags || []
       });
+      console.log('✅ Company created successfully:', company.id);
 
       // If there's also deal information, create the deal
       let deal = null;
@@ -112,6 +114,9 @@ class CRMExecutor {
           : `Created company "${company.name}"`
       };
     } catch (error: any) {
+      console.error('❌ Supabase error creating company:', error);
+      console.error('❌ Error details:', error.message);
+      console.error('❌ Error stack:', error.stack);
       return {
         success: false,
         error: error.message,

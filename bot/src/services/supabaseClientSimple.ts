@@ -5,6 +5,10 @@ import bcrypt from 'bcryptjs';
 const supabaseUrl = process.env.SUPABASE_URL || 'https://gpejlfhsesjnbeiactlo.supabase.co';
 const supabaseAnonKey = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdwZWpsZmhzZXNqbmJlaWFjdGxvIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTQwNzU2ODYsImV4cCI6MjA2OTY1MTY4Nn0.S70xr_zAksc9uWiFWB3YQhqVN34Kx_OtUmDKB_2uLXc';
 
+console.log('🔍 Supabase Configuration:');
+console.log('SUPABASE_URL:', supabaseUrl ? 'SET (' + supabaseUrl + ')' : 'MISSING');
+console.log('SUPABASE_ANON_KEY:', supabaseAnonKey ? 'SET (' + supabaseAnonKey.substring(0, 20) + '...)' : 'MISSING');
+
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error('Missing Supabase configuration');
   process.exit(1);
